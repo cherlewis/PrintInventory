@@ -188,8 +188,79 @@ def delete_printer(serial_number):
 
 init_db()
 
-st.title("🖨️ PrintGuard EU — Xerox Fleet Management Console")
-st.caption("European Multi-site Fleet Management, Security Audit & SQLite Database (33 Attributes)")
+if "dark_mode" not in st.session_state:
+    st.session_state["dark_mode"] = False
+
+if st.session_state["dark_mode"]:
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+        [data-testid="stHeader"] {
+            background-color: #0f172a !important;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+        }
+        /* Metric cards styling */
+        div[data-testid="metric-container"] {
+            background-color: #1e293b !important;
+            border: 1px solid #334155 !important;
+            padding: 12px 16px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+        }
+        [data-testid="stMetricValue"] {
+            color: #38bdf8 !important;
+        }
+        [data-testid="stMetricLabel"] {
+            color: #94a3b8 !important;
+        }
+        /* Input fields and selects */
+        .stTextInput input, .stSelectbox select, div[data-baseweb="select"] {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border-color: #475569 !important;
+        }
+        /* Tab navigation */
+        button[data-baseweb="tab"] {
+            color: #94a3b8 !important;
+        }
+        button[data-baseweb="tab"][aria-selected="true"] {
+            color: #38bdf8 !important;
+            border-bottom-color: #38bdf8 !important;
+        }
+        /* Expanders and textareas */
+        .streamlit-expanderHeader, div[data-testid="stExpander"] {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border-color: #334155 !important;
+        }
+        textarea {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border-color: #475569 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+col_title, col_theme = st.columns([4, 1])
+with col_title:
+    st.title("🖨️ PrintGuard EU — Xerox Fleet Management Console")
+    st.caption("European Multi-site Fleet Management, Security Audit & SQLite Database (33 Attributes)")
+
+with col_theme:
+    st.write(" ")
+    theme_btn_label = "☀️ Modo Claro" if st.session_state["dark_mode"] else "🌙 Modo Oscuro"
+    if st.button(theme_btn_label, use_container_width=True, type="secondary"):
+        st.session_state["dark_mode"] = not st.session_state["dark_mode"]
+        st.rerun()
 
 df_fleet = get_all_printers_df()
 total_count = len(df_fleet)
