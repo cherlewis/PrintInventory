@@ -507,6 +507,61 @@ m5.metric("SABIC Pwd Compliant", f"{sabic_rate}%", f"{total_count - sabic_compli
 
 st.divider()
 
+# --- SMART ALERT MONITOR ---
+critical_offline = df_fleet[(df_fleet["Business Critical"] == "Yes") & (df_fleet["Status"].isin(["Offline", "Temp. Offline"]))]
+sabic_non_compliant = df_fleet[df_fleet["SABIC pwd"] == "No"]
+
+if not critical_offline.empty or not sabic_non_compliant.empty:
+    col_al1, col_al2 = st.columns(2)
+    with col_al1:
+        if not critical_offline.empty:
+            st.error(
+                f"🚨 **CRITICAL INCIDENT ALERT ({len(critical_offline)} devices):**\n\n" +
+                ", ".join([f"**{row['Printer Name']}** ({row['Site']})" for _, row in critical_offline.iterrows()]) +
+                "\n\n*Production devices flagged as Business Critical are currently disconnected or down.*"
+            )
+        else:
+            st.success("✅ **Operations Normal:** All Business Critical devices are Online.")
+
+    with col_al2:
+        if not sabic_non_compliant.empty:
+            st.warning(
+                f"🛡️ **SECURITY AUDIT ALERT ({len(sabic_non_compliant)} devices):**\n\n" +
+                f"{len(sabic_non_compliant)} printers have default credentials (`SABIC pwd = No`). " +
+                "Action required by site technicians to enforce hardening policy."
+            )
+        else:
+            st.success("🛡️ **Hardening Compliant:** 100% of fleet meets SABIC password standards.")
+
+# --- FLEET ANALYTICS & LEASE RADAR ---
+with st.expander("📊 Fleet Visual Analytics & Lease Expiration Radar", expanded=True):
+    col_ch1, col_ch2 = st.columns(2)
+    
+    with col_ch1:
+        st.write("##### 🏢 Fleet Distribution by Site")
+        if not df_fleet.empty and "Site" in df_fleet.columns:
+            site_counts = df_fleet["Site"].value_counts().reset_index()
+            site_counts.columns = ["Site", "Printers"]
+            st.bar_chart(site_counts.set_index("Site"), color="#0284c7")
+        else:
+            st.info("No site records to display.")
+
+    with col_ch2:
+        st.write("##### ⏳ Lease Expiration Radar (By Year)")
+        if not df_fleet.empty and "Lease exp." in df_fleet.columns:
+            # Extract 4-digit year from Lease exp string (e.g. 2026-05-12 or 2026)
+            lease_years = df_fleet["Lease exp."].astype(str).str.extract(r'(\b20\d{2}\b)')[0].dropna()
+            if not lease_years.empty:
+                year_counts = lease_years.value_counts().sort_index().reset_index()
+                year_counts.columns = ["Year", "Contracts Expiring"]
+                st.bar_chart(year_counts.set_index("Year"), color="#f59e0b")
+            else:
+                st.info("No lease expiration dates formatted with years.")
+        else:
+            st.info("No lease information available.")
+
+st.divider()
+
 c_search, c_status, c_spare = st.columns([2, 1, 1])
 with c_search:
     search_query = st.text_input("🔍 Global Search", placeholder="Filter by Name, IP, Serial, Model, Site...")
@@ -585,6 +640,71 @@ with exp_col2:
                     loaded += 1
                 st.success(f"Successfully processed {loaded} printers!")
                 st.rerun()
+
+        st.markdown("---")
+        st.write("🧪 **Developer & Audit Testing:**")
+        if st.button("⚡ Generate 50 Realistic European Test Printers", type="secondary", use_container_width=True):
+            # Inline generation of the 50 dataset
+            try:
+                import random
+                sites = [
+                    {"site": "Cartagena Site", "city": "Cartagena", "country": "Spain", "prefix": "ES-CAR", "street": "Ctra. La Aljorra s/n", "zip": "30390", "subnet": "10.42", "ysoft": "srv-safeq-es01.sabic.corp"},
+                    {"site": "Bergen op Zoom Site", "city": "Bergen op Zoom", "country": "Netherlands", "prefix": "NL-BOZ", "street": "Plasticslaan 1", "zip": "4612 PX", "subnet": "10.50", "ysoft": "srv-safeq-nl01.sabic.corp"},
+                    {"site": "Geleen Site", "city": "Geleen", "country": "Netherlands", "prefix": "NL-GEL", "street": "Urmonderbaan 22", "zip": "6167 RD", "subnet": "10.60", "ysoft": "srv-safeq-nl02.sabic.corp"},
+                    {"site": "Teesside Wilton Site", "city": "Wilton", "country": "United Kingdom", "prefix": "UK-TSD", "street": "Wilton International", "zip": "TS10 4RF", "subnet": "10.72", "ysoft": "srv-safeq-uk01.sabic.corp"}
+                ]
+                models = ["Xerox AltaLink C8170", "Xerox AltaLink C8055", "Xerox VersaLink C405", "Xerox VersaLink B405", "Xerox WorkCentre 5855"]
+                bus = ["ETP", "EP", "SHPP"]
+                buildings = ["Central Admin", "QC Lab", "Warehouse Bay 3", "Production Unit 1", "Engineering Plant", "Logistics Gate"]
+                random.seed(42)
+                for i in range(1, 51):
+                    s = sites[i % len(sites)]
+                    is_sp = "Yes" if i in [5, 12, 24, 38, 49] else "No"
+                    st_val = "DISPOSED" if i in [18, 33] else ("Offline" if i in [8, 27] else ("Temp. Offline" if i in [14, 42] else "Active"))
+                    sabic = "No" if i in [7, 19, 29, 36, 47] else "Yes"
+                    bld = random.choice(buildings)
+                    is_crit = "Yes" if (bld in ["QC Lab", "Production Unit 1"] and is_sp == "No") else "No"
+                    lyear = 2026 + (i % 4)
+                    p_rec = {
+                        "Printer Name": f"{s['prefix']}-{'SPARE' if is_sp == 'Yes' else 'PRT'}-{i:03d}",
+                        "YSoft SafeQ 6 Site Server": s["ysoft"],
+                        "Business Critical": is_crit,
+                        "Turnaround": f"Q{(i%4)+1}-{lyear}",
+                        "Spare?": is_sp,
+                        "Business (ETP, EP, SHPP)": random.choice(bus),
+                        "Status": st_val,
+                        "MACD / Orderdesk info (in progress)": f"Ticket #{31000+i}" if st_val != "Active" else "None",
+                        "Model": random.choice(models),
+                        "Location": f"{bld} - Floor {(i%3)+1}",
+                        "City": s["city"],
+                        "Site": s["site"],
+                        "Street Address": s["street"],
+                        "Postal Code": s["zip"],
+                        "Country": s["country"],
+                        "Serial Number": f"XRX-{s['prefix'][-3:]}-{8000+i}",
+                        "Asset Tag": f"AT-{s['prefix'][:2]}-{1000+i}",
+                        "IP Address": f"{s['subnet']}.14.{10+i}",
+                        "Subnet Mask": "255.255.255.0",
+                        "MAC Address": f"00:00:AA:12:34:{i:02d}",
+                        "SAP Queues": f"{s['prefix'][-3:]}_PRT_{i:02d}",
+                        "Install Date": f"{lyear-5}-03-15",
+                        "Lease exp.": f"{lyear}-03-15",
+                        "Infoblox address reservation + A/PTR Record": "Yes - Reserved",
+                        "Firmware": "103.004.015",
+                        "SABIC pwd": sabic,
+                        "IP by / or USB": "Network IP",
+                        "YSoft Auth. Method": "Badge (MIFARE)",
+                        "Copy released (YSoft 'To each application')": "Enabled",
+                        "Activity code": f"ACT-{100+i}",
+                        "Remarks": f"Production unit assigned to {bld}",
+                        "Extra Remark": "Audit verified",
+                        "Actions done": "Heartbeat OK"
+                    }
+                    insert_or_update_printer(p_rec)
+                st.success("Successfully generated and inserted 50 realistic test printers into SQLite!")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error generating records: {e}")
 
 st.divider()
 
