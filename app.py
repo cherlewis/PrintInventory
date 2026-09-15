@@ -198,17 +198,28 @@ if st.session_state["dark_mode"]:
         /* Base background & typography */
         .stApp {
             background-color: #0f172a !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
         }
         [data-testid="stHeader"] {
             background-color: #0f172a !important;
         }
         [data-testid="stSidebar"] {
             background-color: #1e293b !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
         }
         h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
+        }
+
+        /* Labels for all inputs, selectboxes, etc. */
+        [data-testid="stWidgetLabel"],
+        [data-testid="stWidgetLabel"] *,
+        label, 
+        label p, 
+        label span {
+            color: #f8fafc !important;
+            -webkit-text-fill-color: #f8fafc !important;
+            font-weight: 600 !important;
         }
 
         /* Metric cards */
@@ -226,7 +237,7 @@ if st.session_state["dark_mode"]:
             color: #94a3b8 !important;
         }
 
-        /* Form containers (removes white form box) */
+        /* Form containers */
         div[data-testid="stForm"] {
             background-color: #1e293b !important;
             border: 1px solid #334155 !important;
@@ -234,23 +245,25 @@ if st.session_state["dark_mode"]:
             padding: 18px !important;
         }
 
-        /* Text inputs, number inputs, textareas, and BaseWeb wrappers */
+        /* Text inputs and textareas font color & background */
         div[data-baseweb="input"],
         div[data-baseweb="input"] > div,
         div[data-baseweb="base-input"],
         .stTextInput input,
         textarea {
             background-color: #1e293b !important;
-            color: #f8fafc !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             border-color: #475569 !important;
         }
         input:disabled, textarea:disabled {
             background-color: #0f172a !important;
-            color: #64748b !important;
+            color: #94a3b8 !important;
+            -webkit-text-fill-color: #94a3b8 !important;
             border-color: #334155 !important;
         }
 
-        /* Selectboxes: Comprehensive coverage for Status, Spare?, Business Critical, SABIC pwd */
+        /* Selectboxes: Comprehensive coverage and pure white text */
         div[data-testid="stSelectbox"],
         div[data-testid="stSelectbox"] > div,
         div[data-testid="stSelectbox"] > div > div,
@@ -260,16 +273,16 @@ if st.session_state["dark_mode"]:
         div[data-baseweb="select"] div[role="combobox"],
         div[data-baseweb="select"] > div > div {
             background-color: #1e293b !important;
-            color: #f8fafc !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             border-color: #475569 !important;
         }
 
-        /* Inner text value & dropdown icons inside selectboxes */
-        div[data-baseweb="select"] span,
-        div[data-baseweb="select"] div,
-        div[data-testid="stSelectbox"] span,
-        div[data-testid="stSelectbox"] div {
-            color: #f8fafc !important;
+        /* Inner text value & icons inside selectboxes */
+        div[data-baseweb="select"] *,
+        div[data-testid="stSelectbox"] * {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
         div[data-baseweb="select"] svg,
@@ -278,15 +291,16 @@ if st.session_state["dark_mode"]:
             color: #94a3b8 !important;
         }
 
-        /* Multiselect chips/tags (fixes white tag boxes in column selector) */
+        /* Multiselect tags and chips */
         div[data-baseweb="tag"],
         span[data-baseweb="tag"] {
             background-color: #334155 !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
             border: 1px solid #475569 !important;
         }
-        div[data-baseweb="tag"] span {
-            color: #f1f5f9 !important;
+        div[data-baseweb="tag"] * {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
         /* Dropdown options menu, listboxes & popovers */
@@ -299,63 +313,71 @@ if st.session_state["dark_mode"]:
         li[data-baseweb="menu-item"],
         li[role="option"] {
             background-color: #1e293b !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             border-color: #334155 !important;
         }
 
-        /* Dropdown item hover & active states */
+        /* Dropdown item text & hover/active states */
+        li[role="option"] *,
+        li[data-baseweb="menu-item"] * {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
         li[data-baseweb="menu-item"]:hover,
         li[data-baseweb="menu-item"][aria-selected="true"],
         li[role="option"]:hover,
         li[role="option"][aria-selected="true"] {
             background-color: #334155 !important;
             color: #38bdf8 !important;
+            -webkit-text-fill-color: #38bdf8 !important;
         }
 
-        li[role="option"] *,
-        li[data-baseweb="menu-item"] * {
-            background-color: transparent !important;
-            color: inherit !important;
-        }
-
-        /* File uploader dropzone (fixes large white upload box) */
+        /* File uploader dropzone */
         section[data-testid="stFileUploadDropzone"],
         div[data-testid="stFileUploaderDropzone"] {
             background-color: #1e293b !important;
             border: 1px dashed #475569 !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
         }
         section[data-testid="stFileUploadDropzone"] * {
             color: #cbd5e1 !important;
+            -webkit-text-fill-color: #cbd5e1 !important;
         }
 
-        /* Buttons (Preset buttons, secondary actions) */
+        /* Buttons */
         div.stButton > button,
         button[kind="secondary"] {
             background-color: #1e293b !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             border: 1px solid #475569 !important;
         }
         div.stButton > button:hover {
             background-color: #334155 !important;
             border-color: #38bdf8 !important;
             color: #38bdf8 !important;
+            -webkit-text-fill-color: #38bdf8 !important;
         }
 
         /* Primary action buttons */
         button[kind="primary"] {
             background-color: #0284c7 !important;
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             border: none !important;
         }
 
         /* Tabs navigation */
         button[data-baseweb="tab"] {
             color: #94a3b8 !important;
+            -webkit-text-fill-color: #94a3b8 !important;
             background-color: transparent !important;
         }
         button[data-baseweb="tab"][aria-selected="true"] {
             color: #38bdf8 !important;
+            -webkit-text-fill-color: #38bdf8 !important;
             border-bottom-color: #38bdf8 !important;
         }
         div[data-baseweb="tab-highlight"] {
@@ -371,9 +393,11 @@ if st.session_state["dark_mode"]:
             border: 1px solid #334155 !important;
             border-radius: 8px !important;
         }
-        div[data-testid="stExpander"] summary {
+        div[data-testid="stExpander"] summary,
+        div[data-testid="stExpander"] summary * {
             background-color: #1e293b !important;
-            color: #f1f5f9 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
         /* Dividers */
