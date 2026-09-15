@@ -195,6 +195,7 @@ if st.session_state["dark_mode"]:
     st.markdown(
         """
         <style>
+        /* Base background & typography */
         .stApp {
             background-color: #0f172a !important;
             color: #f1f5f9 !important;
@@ -206,7 +207,11 @@ if st.session_state["dark_mode"]:
             background-color: #1e293b !important;
             color: #f1f5f9 !important;
         }
-        /* Metric cards styling */
+        h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
+            color: #f1f5f9 !important;
+        }
+
+        /* Metric cards */
         div[data-testid="metric-container"] {
             background-color: #1e293b !important;
             border: 1px solid #334155 !important;
@@ -220,30 +225,125 @@ if st.session_state["dark_mode"]:
         [data-testid="stMetricLabel"] {
             color: #94a3b8 !important;
         }
-        /* Input fields and selects */
-        .stTextInput input, .stSelectbox select, div[data-baseweb="select"] {
+
+        /* Form containers (removes white form box) */
+        div[data-testid="stForm"] {
             background-color: #1e293b !important;
-            color: #f1f5f9 !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px !important;
+            padding: 18px !important;
+        }
+
+        /* Text inputs, number inputs, textareas, and BaseWeb wrappers */
+        div[data-baseweb="input"],
+        div[data-baseweb="input"] > div,
+        div[data-baseweb="base-input"],
+        .stTextInput input,
+        textarea {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
             border-color: #475569 !important;
         }
-        /* Tab navigation */
+        input:disabled, textarea:disabled {
+            background-color: #0f172a !important;
+            color: #64748b !important;
+            border-color: #334155 !important;
+        }
+
+        /* Selectboxes & Multiselect wrappers */
+        div[data-baseweb="select"],
+        div[data-baseweb="select"] > div,
+        div[data-baseweb="select"] input {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #475569 !important;
+        }
+
+        /* Multiselect chips/tags (fixes white tag boxes in column selector) */
+        div[data-baseweb="tag"],
+        span[data-baseweb="tag"] {
+            background-color: #334155 !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #475569 !important;
+        }
+        div[data-baseweb="tag"] span {
+            color: #f1f5f9 !important;
+        }
+
+        /* Dropdown options menu & popovers */
+        div[data-baseweb="popover"],
+        ul[data-baseweb="menu"],
+        li[data-baseweb="menu-item"] {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+        }
+        li[data-baseweb="menu-item"]:hover,
+        li[data-baseweb="menu-item"][aria-selected="true"] {
+            background-color: #334155 !important;
+            color: #38bdf8 !important;
+        }
+
+        /* File uploader dropzone (fixes large white upload box) */
+        section[data-testid="stFileUploadDropzone"],
+        div[data-testid="stFileUploaderDropzone"] {
+            background-color: #1e293b !important;
+            border: 1px dashed #475569 !important;
+            color: #f1f5f9 !important;
+        }
+        section[data-testid="stFileUploadDropzone"] * {
+            color: #cbd5e1 !important;
+        }
+
+        /* Buttons (Preset buttons, secondary actions) */
+        div.stButton > button,
+        button[kind="secondary"] {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #475569 !important;
+        }
+        div.stButton > button:hover {
+            background-color: #334155 !important;
+            border-color: #38bdf8 !important;
+            color: #38bdf8 !important;
+        }
+
+        /* Primary action buttons */
+        button[kind="primary"] {
+            background-color: #0284c7 !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+
+        /* Tabs navigation */
         button[data-baseweb="tab"] {
             color: #94a3b8 !important;
+            background-color: transparent !important;
         }
         button[data-baseweb="tab"][aria-selected="true"] {
             color: #38bdf8 !important;
             border-bottom-color: #38bdf8 !important;
         }
-        /* Expanders and textareas */
-        .streamlit-expanderHeader, div[data-testid="stExpander"] {
-            background-color: #1e293b !important;
-            color: #f1f5f9 !important;
-            border-color: #334155 !important;
+        div[data-baseweb="tab-highlight"] {
+            background-color: #38bdf8 !important;
         }
-        textarea {
+        div[data-baseweb="tab-border"] {
+            background-color: #334155 !important;
+        }
+
+        /* Expanders */
+        div[data-testid="stExpander"] {
+            background-color: #1e293b !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px !important;
+        }
+        div[data-testid="stExpander"] summary {
             background-color: #1e293b !important;
             color: #f1f5f9 !important;
-            border-color: #475569 !important;
+        }
+
+        /* Dividers */
+        hr {
+            border-color: #334155 !important;
         }
         </style>
         """,
