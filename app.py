@@ -399,6 +399,45 @@ if st.session_state["dark_mode"]:
             border-radius: 10px !important;
         }
 
+        /* Vega-Lite / Native Charts (st.bar_chart) Dark Mode */
+        div[data-testid="stVegaLiteChart"],
+        div[data-testid="stArrowVegaLiteChart"],
+        div[data-testid="stVegaLiteChart"] > div,
+        div[data-testid="stArrowVegaLiteChart"] > div,
+        div[data-testid="stVegaLiteChart"] canvas,
+        div[data-testid="stArrowVegaLiteChart"] canvas {
+            background-color: #1e293b !important;
+            border-radius: 8px !important;
+        }
+
+        div[data-testid="stVegaLiteChart"] svg,
+        div[data-testid="stArrowVegaLiteChart"] svg {
+            background-color: transparent !important;
+        }
+
+        /* Chart background rectangle */
+        div[data-testid="stVegaLiteChart"] svg rect.background,
+        div[data-testid="stArrowVegaLiteChart"] svg rect.background {
+            fill: transparent !important;
+        }
+
+        /* Chart axis labels, numbers, and text */
+        div[data-testid="stVegaLiteChart"] text,
+        div[data-testid="stArrowVegaLiteChart"] text,
+        div[data-testid="stVegaLiteChart"] text *,
+        div[data-testid="stArrowVegaLiteChart"] text * {
+            fill: #cbd5e1 !important;
+            font-size: 11px !important;
+        }
+
+        /* Chart grid lines and axis borders */
+        div[data-testid="stVegaLiteChart"] line,
+        div[data-testid="stArrowVegaLiteChart"] line,
+        div[data-testid="stVegaLiteChart"] path.domain,
+        div[data-testid="stArrowVegaLiteChart"] path.domain {
+            stroke: #334155 !important;
+        }
+
         /* File uploader dropzone */
         section[data-testid="stFileUploadDropzone"],
         div[data-testid="stFileUploaderDropzone"] {
@@ -467,6 +506,10 @@ if st.session_state["dark_mode"]:
             background-color: #1e293b !important;
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
+        }
+        div[data-testid="stExpander"] div[data-testid="stExpanderDetails"],
+        div[data-testid="stExpander"] div[role="region"] {
+            background-color: #1e293b !important;
         }
 
         /* Dividers */
