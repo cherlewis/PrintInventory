@@ -164,16 +164,18 @@ def get_all_printers_df():
 def insert_or_update_printer(data_dict):
     conn = get_db_connection()
     cursor = conn.cursor()
-    columns = [f'"{k}"' for k in data_dict.keys()]
-    placeholders = [":" + k for k in data_dict.keys()]
-    update_clause = [f'"{k}" = excluded."{k}"' for k in data_dict.keys() if k != "Serial Number"]
+    keys = list(data_dict.keys())
+    columns = [f'"{k}"' for k in keys]
+    placeholders = ['?'] * len(keys)
+    values = [str(data_dict[k]) if data_dict[k] is not None else "" for k in keys]
+    update_clause = [f'"{k}" = excluded."{k}"' for k in keys if k != "Serial Number"]
     sql = f"""
     INSERT INTO printers ({', '.join(columns)})
     VALUES ({', '.join(placeholders)})
     ON CONFLICT("Serial Number") DO UPDATE SET
     {', '.join(update_clause)};
     """
-    cursor.execute(sql, data_dict)
+    cursor.execute(sql, values)
     conn.commit()
     conn.close()
 
