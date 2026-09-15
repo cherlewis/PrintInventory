@@ -250,13 +250,32 @@ if st.session_state["dark_mode"]:
             border-color: #334155 !important;
         }
 
-        /* Selectboxes & Multiselect wrappers */
+        /* Selectboxes: Comprehensive coverage for Status, Spare?, Business Critical, SABIC pwd */
+        div[data-testid="stSelectbox"],
+        div[data-testid="stSelectbox"] > div,
+        div[data-testid="stSelectbox"] > div > div,
+        div[data-testid="stSelectbox"] div[role="combobox"],
         div[data-baseweb="select"],
         div[data-baseweb="select"] > div,
-        div[data-baseweb="select"] input {
+        div[data-baseweb="select"] div[role="combobox"],
+        div[data-baseweb="select"] > div > div {
             background-color: #1e293b !important;
             color: #f8fafc !important;
             border-color: #475569 !important;
+        }
+
+        /* Inner text value & dropdown icons inside selectboxes */
+        div[data-baseweb="select"] span,
+        div[data-baseweb="select"] div,
+        div[data-testid="stSelectbox"] span,
+        div[data-testid="stSelectbox"] div {
+            color: #f8fafc !important;
+        }
+
+        div[data-baseweb="select"] svg,
+        div[data-testid="stSelectbox"] svg {
+            fill: #94a3b8 !important;
+            color: #94a3b8 !important;
         }
 
         /* Multiselect chips/tags (fixes white tag boxes in column selector) */
@@ -270,17 +289,33 @@ if st.session_state["dark_mode"]:
             color: #f1f5f9 !important;
         }
 
-        /* Dropdown options menu & popovers */
+        /* Dropdown options menu, listboxes & popovers */
         div[data-baseweb="popover"],
+        div[data-baseweb="popover"] > div,
+        div[data-baseweb="popover"] ul,
         ul[data-baseweb="menu"],
-        li[data-baseweb="menu-item"] {
+        ul[role="listbox"],
+        div[role="listbox"],
+        li[data-baseweb="menu-item"],
+        li[role="option"] {
             background-color: #1e293b !important;
             color: #f1f5f9 !important;
+            border-color: #334155 !important;
         }
+
+        /* Dropdown item hover & active states */
         li[data-baseweb="menu-item"]:hover,
-        li[data-baseweb="menu-item"][aria-selected="true"] {
+        li[data-baseweb="menu-item"][aria-selected="true"],
+        li[role="option"]:hover,
+        li[role="option"][aria-selected="true"] {
             background-color: #334155 !important;
             color: #38bdf8 !important;
+        }
+
+        li[role="option"] *,
+        li[data-baseweb="menu-item"] * {
+            background-color: transparent !important;
+            color: inherit !important;
         }
 
         /* File uploader dropzone (fixes large white upload box) */
