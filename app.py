@@ -207,11 +207,22 @@ if st.session_state["dark_mode"]:
             background-color: #1e293b !important;
             color: #ffffff !important;
         }
-        h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
+
+        /* Headings & Fleet Records subheaders */
+        [data-testid="stHeadingWithActionElements"],
+        [data-testid="stHeadingWithActionElements"] *,
+        [data-testid="stHeading"],
+        [data-testid="stHeading"] *,
+        h1, h2, h3, h4, h5, h6,
+        h1 *, h2 *, h3 *, h4 *, h5 *, h6 *,
+        .stMarkdown,
+        .stMarkdown *,
+        p, span, strong {
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
-        /* Labels for all inputs, selectboxes, etc. */
+        /* Labels for all inputs, selectboxes, and multiselects */
         [data-testid="stWidgetLabel"],
         [data-testid="stWidgetLabel"] *,
         label, 
@@ -256,11 +267,25 @@ if st.session_state["dark_mode"]:
             -webkit-text-fill-color: #ffffff !important;
             border-color: #475569 !important;
         }
-        input:disabled, textarea:disabled {
+
+        /* Disabled inputs (Specifically Serial Number in Edit Form) */
+        input:disabled,
+        input[disabled],
+        textarea:disabled,
+        textarea[disabled],
+        div[data-baseweb="input"]:has(input:disabled),
+        div[data-baseweb="input"]:has(input[disabled]),
+        div[data-baseweb="base-input"]:has(input:disabled),
+        div[data-baseweb="base-input"]:has(input[disabled]),
+        div[data-baseweb="input"][disabled],
+        div[data-baseweb="base-input"][disabled] {
             background-color: #0f172a !important;
-            color: #94a3b8 !important;
-            -webkit-text-fill-color: #94a3b8 !important;
+            color: #38bdf8 !important;
+            -webkit-text-fill-color: #38bdf8 !important;
             border-color: #334155 !important;
+            opacity: 1 !important;
+            font-weight: 600 !important;
+            cursor: not-allowed !important;
         }
 
         /* Selectboxes: Comprehensive coverage and pure white text */
@@ -291,16 +316,41 @@ if st.session_state["dark_mode"]:
             color: #94a3b8 !important;
         }
 
+        /* Multiselect - Custom Visible Columns Coverage */
+        div[data-testid="stMultiSelect"],
+        div[data-testid="stMultiSelect"] > div,
+        div[data-testid="stMultiSelect"] > div > div,
+        div[data-testid="stMultiSelect"] [data-baseweb="select"],
+        div[data-testid="stMultiSelect"] [data-baseweb="select"] > div,
+        div[data-testid="stMultiSelect"] [data-baseweb="base-input"] {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+            border-color: #475569 !important;
+        }
+
+        div[data-testid="stMultiSelect"] input {
+            background-color: transparent !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
         /* Multiselect tags and chips */
         div[data-baseweb="tag"],
         span[data-baseweb="tag"] {
             background-color: #334155 !important;
             color: #ffffff !important;
             border: 1px solid #475569 !important;
+            border-radius: 6px !important;
         }
-        div[data-baseweb="tag"] * {
+        div[data-baseweb="tag"] *,
+        span[data-baseweb="tag"] * {
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
+        }
+        div[data-baseweb="tag"] svg,
+        span[data-baseweb="tag"] svg {
+            fill: #cbd5e1 !important;
+            color: #cbd5e1 !important;
         }
 
         /* Dropdown options menu, listboxes & popovers */
@@ -346,15 +396,18 @@ if st.session_state["dark_mode"]:
             -webkit-text-fill-color: #cbd5e1 !important;
         }
 
-        /* Buttons */
+        /* Buttons & Preset triggers */
         div.stButton > button,
-        button[kind="secondary"] {
+        div.stButton > button *,
+        button[kind="secondary"],
+        button[kind="secondary"] * {
             background-color: #1e293b !important;
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
-            border: 1px solid #475569 !important;
+            border-color: #475569 !important;
         }
-        div.stButton > button:hover {
+        div.stButton > button:hover,
+        button[kind="secondary"]:hover {
             background-color: #334155 !important;
             border-color: #38bdf8 !important;
             color: #38bdf8 !important;
@@ -362,7 +415,8 @@ if st.session_state["dark_mode"]:
         }
 
         /* Primary action buttons */
-        button[kind="primary"] {
+        button[kind="primary"],
+        button[kind="primary"] * {
             background-color: #0284c7 !important;
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
