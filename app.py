@@ -384,6 +384,21 @@ if st.session_state["dark_mode"]:
             -webkit-text-fill-color: #38bdf8 !important;
         }
 
+        /* Fleet Records Dataframe & Table Dark Mode */
+        div[data-testid="stDataFrame"],
+        div[data-testid="stTable"],
+        div[data-testid="stDataEditor"] {
+            background-color: #1e293b !important;
+            filter: invert(0.92) hue-rotate(180deg) contrast(1.05) !important;
+            border: 1px solid #334155 !important;
+            border-radius: 10px !important;
+            overflow: hidden !important;
+        }
+
+        div[data-testid="stDataFrame"] canvas {
+            border-radius: 10px !important;
+        }
+
         /* File uploader dropzone */
         section[data-testid="stFileUploadDropzone"],
         div[data-testid="stFileUploaderDropzone"] {
